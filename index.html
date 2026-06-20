@@ -1,890 +1,1490 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>anita.cms — AI Web Developer</title>
+<title>Ashes of Viremont — Redesigned GDD</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;0,900;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Noto+Sans+JP:wght@400;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root {
-  --sky: #3BB8D8;
-  --sky-light: #7DD6EA;
-  --sky-pale: #C8EEFA;
-  --sky-dark: #1A8BAA;
-  --gold: #F5C400;
-  --gold-light: #FFD84D;
-  --bg: #E8F7FC;
-  --bg-card: #FFFFFF;
-  --text: #0D2B38;
-  --text-muted: #4A7A8A;
-  --border: rgba(59,184,216,0.25);
-  --circuit: rgba(59,184,216,0.12);
-}
+  :root {
+    --ink: #1a1410;
+    --ink-muted: #4a4035;
+    --ink-faint: #8a7a6a;
+    --parchment: #f5f0e8;
+    --parchment-dark: #ede5d5;
+    --parchment-deep: #d9cdb8;
+    --ember: #8b3a1e;
+    --ember-light: #c05a30;
+    --ash: #6b6460;
+    --grey-bloom: #5a5258;
+    --gold: #9a7840;
+    --gold-light: #c4a060;
+    --cream: #faf7f2;
+    --border: rgba(90,70,50,0.18);
+    --border-strong: rgba(90,70,50,0.35);
+  }
 
-*{margin:0;padding:0;box-sizing:border-box}
+  html { scroll-behavior: smooth; }
 
-body {
-  font-family: 'Nunito', 'Noto Sans JP', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  overflow-x: hidden;
-  position: relative;
-}
+  body {
+    font-family: 'EB Garamond', Georgia, serif;
+    background: var(--parchment);
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.75;
+  }
 
-/* Circuit board background */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--circuit) 1px, transparent 1px),
-    linear-gradient(90deg, var(--circuit) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-  z-index: 0;
-}
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--ink);
+    border-bottom: 1px solid rgba(200,160,96,0.3);
+    display: flex; align-items: center; gap: 0;
+    padding: 0 2rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .nav-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: var(--gold-light);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 1rem 1.5rem 1rem 0;
+    border-right: 1px solid rgba(200,160,96,0.2);
+    margin-right: 1rem;
+  }
+  nav a {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.55);
+    text-decoration: none;
+    padding: 1rem 0.85rem;
+    white-space: nowrap;
+    transition: color 0.2s;
+    border-bottom: 2px solid transparent;
+  }
+  nav a:hover { color: var(--gold-light); }
+  nav a.active { color: var(--gold-light); border-bottom-color: var(--gold); }
 
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59,184,216,0.18) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    min-height: 92vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(139,58,30,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 400;
+    color: var(--parchment);
+    line-height: 1.05;
+    margin-bottom: 0.4em;
+  }
+  .hero-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    color: var(--gold-light);
+    margin-bottom: 3rem;
+  }
+  .hero-divider {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    margin: 0 auto 3rem;
+  }
+  .hero-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: rgba(245,240,232,0.75);
+    max-width: 500px;
+    line-height: 1.6;
+  }
+  .hero-attr {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: rgba(245,240,232,0.35);
+    margin-top: 1rem;
+  }
 
-/* ── NAV ── */
-nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(232,247,252,0.88);
-  backdrop-filter: blur(14px);
-  border-bottom: 2px solid var(--border);
-  padding: 0 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 56px;
-}
+  /* ── LAYOUT ── */
+  .container { max-width: 820px; margin: 0 auto; padding: 0 2rem; }
+  .section { padding: 5rem 0; }
+  .section + .section { border-top: 1px solid var(--border); }
 
-.nav-logo {
-  font-family: 'Space Mono', monospace;
-  font-weight: 700;
-  font-size: 17px;
-  color: var(--sky-dark);
-  letter-spacing: -0.5px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+  .section-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 2rem;
+  }
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 2rem 0 0.75rem;
+  }
+  p { margin-bottom: 1.2rem; color: var(--ink-muted); }
+  p:last-child { margin-bottom: 0; }
 
-.nav-logo span {
-  background: var(--gold);
-  color: var(--text);
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 4px;
-  letter-spacing: 1px;
-  vertical-align: middle;
-}
+  /* ── CALLOUT BOX ── */
+  .callout {
+    background: var(--parchment-dark);
+    border-left: 3px solid var(--ember);
+    border-radius: 0 6px 6px 0;
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+  }
+  .callout p { color: var(--ink-muted); font-style: italic; margin-bottom: 0.5rem; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 0.5rem;
+  }
 
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 24px;
-}
+  /* ── TWIST BANNER ── */
+  .twist-banner {
+    background: var(--ink);
+    color: var(--parchment);
+    border-radius: 8px;
+    padding: 2rem 2rem 2rem 1.75rem;
+    margin: 2.5rem 0;
+    border-left: 4px solid var(--ember-light);
+    position: relative;
+    overflow: hidden;
+  }
+  .twist-banner::after {
+    content: '✦';
+    position: absolute;
+    right: 1.5rem; top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: rgba(200,160,96,0.15);
+  }
+  .twist-banner .twist-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ember-light);
+    margin-bottom: 0.5rem;
+  }
+  .twist-banner h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold-light);
+    font-size: 1.15rem;
+    margin: 0 0 0.6rem;
+  }
+  .twist-banner p {
+    color: rgba(245,240,232,0.75);
+    font-size: 0.95rem;
+    margin: 0;
+  }
 
-nav a {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  color: var(--text-muted);
-  text-decoration: none;
-  letter-spacing: 0.5px;
-  transition: color 0.2s;
-}
-nav a:hover { color: var(--sky-dark); }
+  /* ── CHARACTER CARDS ── */
+  .char-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  .char-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .char-card-header {
+    background: var(--ink);
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .char-card-role {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+  .char-card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--parchment);
+    line-height: 1.15;
+  }
+  .char-card-age {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: rgba(245,240,232,0.4);
+    margin-top: 0.25rem;
+  }
+  .char-card-body { padding: 1.25rem 1.5rem; }
+  .char-trait {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .char-trait:last-child { border-bottom: none; }
+  .char-trait-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    min-width: 64px;
+    padding-top: 0.15rem;
+    flex-shrink: 0;
+  }
+  .char-trait-text {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--ink-muted);
+  }
+  .char-twist {
+    background: rgba(139,58,30,0.07);
+    border-left: 2px solid var(--ember);
+    border-radius: 0 4px 4px 0;
+    padding: 0.6rem 0.75rem;
+    margin-top: 0.5rem;
+  }
+  .char-twist-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 0.2rem;
+  }
+  .char-twist p { font-size: 0.85rem; color: var(--ink-muted); margin: 0; font-style: italic; }
 
-.nav-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  color: var(--sky-dark);
-  background: rgba(59,184,216,0.12);
-  border: 1px solid var(--border);
-  padding: 4px 10px;
-  border-radius: 20px;
-}
-.status-dot {
-  width: 7px; height: 7px;
-  background: #3DD68C;
-  border-radius: 50%;
-  animation: blink 2s ease-in-out infinite;
-}
-@keyframes blink {
-  0%,100%{opacity:1} 50%{opacity:0.3}
-}
+  /* ── CISINI-STYLE DIALOGUE BOX ── */
+  .scene-block {
+    background: var(--ink);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 2.5rem 0;
+  }
+  .scene-header {
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(200,160,96,0.15);
+    padding: 0.75rem 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .scene-location {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .scene-time {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: rgba(245,240,232,0.3);
+  }
+  .scene-body { padding: 1.75rem 1.5rem; }
+  .narration {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(245,240,232,0.55);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+    padding-left: 0;
+  }
+  .dialogue-line { margin-bottom: 1.5rem; }
+  .dialogue-line:last-child { margin-bottom: 0; }
+  .speaker {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .speaker.elias { color: #8fa8c8; }
+  .speaker.eliza { color: #c4a0a0; }
+  .speaker.seraphine { color: #b0a0c8; }
+  .speaker.harwick { color: #8a8070; }
+  .speech {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.05rem;
+    color: rgba(245,240,232,0.88);
+    line-height: 1.65;
+    padding-left: 1rem;
+    border-left: 2px solid rgba(255,255,255,0.08);
+    position: relative;
+  }
+  .speech em {
+    font-style: italic;
+    color: rgba(245,240,232,0.55);
+    font-size: 0.9rem;
+  }
 
-/* ── HERO ── */
-.hero {
-  position: relative;
-  z-index: 1;
-  padding: 40px 28px 32px;
-  border-bottom: 2px solid var(--border);
-  overflow: hidden;
-}
+  /* ── CHAPTER BLOCK ── */
+  .chapter-block {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 2.5rem 0;
+  }
+  .chapter-header {
+    background: var(--parchment-dark);
+    padding: 1.25rem 1.75rem;
+    display: flex; align-items: baseline; gap: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .chapter-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .chapter-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--ink);
+  }
+  .chapter-body { padding: 1.75rem; }
+  .chapter-body p { font-size: 0.95rem; }
 
-/* Decorative circuit lines */
-.hero-deco {
-  position: absolute;
-  top: 0; right: 0;
-  width: 260px; height: 200px;
-  opacity: 0.18;
-  pointer-events: none;
-}
+  /* ── ENDINGS ── */
+  .ending-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .ending-card.best { border-color: rgba(154,120,64,0.5); }
+  .ending-card.secret { border-color: var(--ember); border-width: 2px; }
+  .ending-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .ending-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ash);
+  }
+  .ending-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--ink);
+  }
+  .ending-badge {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-left: auto;
+  }
+  .badge-gold { background: rgba(154,120,64,0.12); color: var(--gold); }
+  .badge-ember { background: rgba(139,58,30,0.12); color: var(--ember); }
+  .badge-ash { background: rgba(106,100,96,0.1); color: var(--ash); }
+  .ending-body { padding: 1.5rem; }
+  .ending-reqs {
+    background: var(--parchment-dark);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .ending-reqs-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ash);
+    margin-bottom: 0.5rem;
+  }
+  .ending-reqs ul { padding-left: 1.1rem; }
+  .ending-reqs li { font-size: 0.88rem; color: var(--ink-muted); margin-bottom: 0.25rem; }
+  .ending-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--ember);
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: 140px 1fr;
-  gap: 24px;
-  align-items: start;
-  position: relative;
-}
+  /* ── THEME GRID ── */
+  .theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin: 2rem 0;
+  }
+  .theme-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+  .theme-icon {
+    font-size: 1.4rem;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+  .theme-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+  .theme-card p { font-size: 0.85rem; line-height: 1.55; margin: 0; }
 
-.avatar-frame {
-  position: relative;
-}
+  /* ── LORE PILL ── */
+  .lore-pill {
+    display: inline-block;
+    background: var(--parchment-dark);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--ash);
+    margin: 2px;
+  }
 
-.avatar-img {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: top;
-  border: 3px solid var(--sky);
-  box-shadow: 0 0 0 6px rgba(59,184,216,0.15), 0 0 30px rgba(59,184,216,0.2);
-  display: block;
-}
+  /* ── SEPARATOR ── */
+  .sep {
+    display: flex; align-items: center; gap: 1rem;
+    margin: 2.5rem 0;
+    color: var(--parchment-deep);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+  }
+  .sep::before, .sep::after {
+    content: ''; flex: 1;
+    height: 1px; background: var(--border);
+  }
 
-.avatar-badge {
-  position: absolute;
-  bottom: 4px; right: 4px;
-  width: 32px; height: 32px;
-  background: var(--gold);
-  border-radius: 50%;
-  border: 2px solid white;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 15px;
-}
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: rgba(245,240,232,0.35);
+    text-align: center;
+    padding: 3rem 2rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+  footer .footer-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--gold-light);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0;
+  }
 
-.avatar-ring {
-  position: absolute;
-  inset: -8px;
-  border-radius: 50%;
-  border: 1px dashed rgba(59,184,216,0.4);
-  animation: spin 18s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.hero-right {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.hero-eyebrow {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  color: var(--sky-dark);
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.hero-eyebrow::before {
-  content: '';
-  display: inline-block;
-  width: 24px; height: 2px;
-  background: var(--gold);
-}
-
-.hero-name {
-  font-family: 'Nunito', sans-serif;
-  font-size: 44px;
-  font-weight: 900;
-  line-height: 1.0;
-  color: var(--text);
-  letter-spacing: -1px;
-}
-.hero-name .accent {
-  color: var(--sky-dark);
-  font-style: italic;
-}
-.hero-name .jp {
-  font-size: 18px;
-  font-family: 'Noto Sans JP', sans-serif;
-  font-weight: 700;
-  color: var(--gold);
-  letter-spacing: 2px;
-  display: block;
-  margin-top: 2px;
-}
-
-.hero-quote {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  color: var(--text-muted);
-  line-height: 1.7;
-  max-width: 420px;
-  border-left: 3px solid var(--gold);
-  padding-left: 12px;
-  font-style: italic;
-}
-
-.hero-bio {
-  font-size: 13px;
-  color: var(--text-muted);
-  line-height: 1.75;
-  max-width: 420px;
-}
-
-.tag-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.tag {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  border: 1px solid transparent;
-}
-.tag.sky { background: rgba(59,184,216,0.15); color: var(--sky-dark); border-color: rgba(59,184,216,0.4); }
-.tag.gold { background: rgba(245,196,0,0.15); color: #8A6A00; border-color: rgba(245,196,0,0.4); }
-.tag.dark { background: rgba(13,43,56,0.08); color: var(--text); border-color: rgba(13,43,56,0.15); }
-
-/* ── TICKER ── */
-.ticker {
-  position: relative;
-  z-index: 1;
-  background: var(--sky-dark);
-  padding: 8px 0;
-  overflow: hidden;
-}
-.ticker-inner {
-  white-space: nowrap;
-  display: inline-block;
-  color: white;
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 2px;
-  animation: scroll 28s linear infinite;
-}
-@keyframes scroll { 0%{transform:translateX(100vw)} 100%{transform:translateX(-100%)} }
-
-/* ── SECTIONS ── */
-section {
-  position: relative;
-  z-index: 1;
-  padding: 32px 28px;
-  border-bottom: 1px solid var(--border);
-}
-
-.sec-eyebrow {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  color: var(--sky-dark);
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-  display: flex; align-items: center; gap: 8px;
-}
-.sec-eyebrow::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-  max-width: 80px;
-}
-
-.sec-title {
-  font-family: 'Nunito', sans-serif;
-  font-size: 26px;
-  font-weight: 900;
-  color: var(--text);
-  margin-bottom: 20px;
-  letter-spacing: -0.5px;
-}
-
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-.card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 18px;
-  box-shadow: 0 2px 16px rgba(59,184,216,0.08);
-  position: relative;
-  overflow: hidden;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--sky), var(--gold));
-}
-
-.card-label {
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  color: var(--sky-dark);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-}
-
-/* Project cards */
-.project-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-.proj-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 16px;
-  box-shadow: 0 2px 12px rgba(59,184,216,0.07);
-  transition: transform 0.2s, box-shadow 0.2s;
-  position: relative;
-  overflow: hidden;
-}
-.proj-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(59,184,216,0.18);
-}
-
-.proj-icon {
-  font-size: 22px;
-  margin-bottom: 8px;
-}
-.proj-card h4 {
-  font-size: 13px;
-  font-weight: 900;
-  color: var(--text);
-  margin-bottom: 4px;
-}
-.proj-card p {
-  font-size: 11px;
-  color: var(--text-muted);
-  line-height: 1.6;
-}
-.proj-card .proj-tag {
-  display: inline-block;
-  margin-top: 8px;
-  font-family: 'Space Mono', monospace;
-  font-size: 9px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  background: rgba(59,184,216,0.1);
-  color: var(--sky-dark);
-  border: 1px solid rgba(59,184,216,0.3);
-}
-
-.proj-card.featured {
-  grid-column: span 2;
-  border-color: var(--gold);
-  background: linear-gradient(135deg, #fffde8 0%, #fff 60%);
-}
-.proj-card.featured::after {
-  content: '★ FLAGSHIP';
-  position: absolute;
-  top: 12px; right: 12px;
-  font-family: 'Space Mono', monospace;
-  font-size: 8px;
-  color: #8A6A00;
-  background: rgba(245,196,0,0.2);
-  padding: 3px 8px;
-  border-radius: 4px;
-  letter-spacing: 1px;
-}
-
-/* Stack table */
-.stack-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.stack-table td {
-  padding: 8px 10px;
-  font-size: 12px;
-  border-bottom: 1px solid var(--border);
-}
-.stack-table td:first-child {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  color: var(--sky-dark);
-  font-weight: 700;
-  letter-spacing: 1px;
-  white-space: nowrap;
-  width: 90px;
-}
-.stack-table td:last-child {
-  color: var(--text);
-  font-weight: 700;
-}
-.stack-table tr:last-child td { border-bottom: none; }
-
-/* Personality */
-.persona-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-.persona-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 12px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-}
-.persona-icon {
-  width: 32px; height: 32px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, var(--sky-pale), rgba(59,184,216,0.2));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px;
-  flex-shrink: 0;
-}
-.persona-text h4 {
-  font-size: 12px;
-  font-weight: 900;
-  color: var(--text);
-  margin-bottom: 2px;
-}
-.persona-text p {
-  font-size: 11px;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-
-/* Loves / Hates */
-.love-hate {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-.lh-col h4 {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-  padding-bottom: 6px;
-  border-bottom: 2px solid;
-}
-.lh-col.love h4 { color: var(--sky-dark); border-color: var(--sky); }
-.lh-col.hate h4 { color: #C44; border-color: #E88; }
-.lh-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--text-muted);
-  padding: 5px 0;
-  border-bottom: 1px dotted var(--border);
-}
-.lh-item:last-child { border-bottom: none; }
-.lh-item span { font-size: 14px; }
-
-/* Fun facts */
-.facts-row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-.fact-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-.fact-num {
-  font-family: 'Space Mono', monospace;
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--sky-light);
-  line-height: 1;
-  flex-shrink: 0;
-}
-.fact-text {
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.55;
-  padding-top: 4px;
-}
-
-/* Divider */
-.circuit-divider {
-  text-align: center;
-  padding: 10px 0;
-  color: var(--sky-light);
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 8px;
-  position: relative;
-  z-index: 1;
-}
-
-/* Footer */
-footer {
-  position: relative;
-  z-index: 1;
-  background: var(--sky-dark);
-  color: white;
-  padding: 20px 28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-footer .f-logo {
-  font-family: 'Space Mono', monospace;
-  font-weight: 700;
-  font-size: 16px;
-}
-footer .f-sub {
-  font-size: 11px;
-  opacity: 0.7;
-  margin-top: 2px;
-  font-family: 'Noto Sans JP', sans-serif;
-}
-footer .f-right {
-  text-align: right;
-}
-footer .f-right p {
-  font-size: 11px;
-  opacity: 0.7;
-  font-family: 'Space Mono', monospace;
-}
-
-/* Fade-in */
-.fadein { opacity: 0; transform: translateY(16px); transition: 0.5s ease; }
-.fadein.vis { opacity: 1; transform: translateY(0); }
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--sky); border-radius: 3px; }
+  @media (max-width: 600px) {
+    .char-grid { grid-template-columns: 1fr; }
+    nav { padding: 0 1rem; }
+    .container { padding: 0 1.25rem; }
+    .hero { padding: 3rem 1.25rem; }
+  }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">
-    anita<span>CMS</span>
-  </div>
-  <ul>
-    <li><a href="#about">./about</a></li>
-    <li><a href="#stack">./stack</a></li>
-    <li><a href="#projects">./projects</a></li>
-    <li><a href="#personality">./core</a></li>
-  </ul>
-  <div class="nav-status">
-    <div class="status-dot"></div>
-    ONLINE 
-  </div>
+  <span class="nav-title">Ashes of Viremont</span>
+  <a href="#world">World</a>
+  <a href="#characters">Characters</a>
+  <a href="#plot-twists">Plot Twists</a>
+  <a href="#chapters">Chapters</a>
+  <a href="#dialogue">Dialogue</a>
+  <a href="#endings">Endings</a>
+  <a href="#themes">Themes</a>
 </nav>
 
 <!-- HERO -->
-<div class="hero" id="about">
-  <svg class="hero-deco" viewBox="0 0 260 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="200" cy="40" r="60" stroke="#3BB8D8" stroke-width="1"/>
-    <circle cx="200" cy="40" r="80" stroke="#3BB8D8" stroke-width="0.5"/>
-    <line x1="200" y1="40" x2="20" y2="40" stroke="#3BB8D8" stroke-width="1"/>
-    <line x1="200" y1="40" x2="200" y2="180" stroke="#3BB8D8" stroke-width="1"/>
-    <circle cx="20" cy="40" r="4" fill="#F5C400"/>
-    <circle cx="200" cy="180" r="4" fill="#3BB8D8"/>
-    <line x1="20" y1="40" x2="20" y2="120" stroke="#3BB8D8" stroke-width="0.5"/>
-    <circle cx="20" cy="120" r="3" stroke="#3BB8D8"/>
-    <line x1="20" y1="120" x2="100" y2="120" stroke="#3BB8D8" stroke-width="0.5"/>
-    <circle cx="100" cy="120" r="3" fill="#F5C400"/>
-  </svg>
+<section class="hero">
+  <p class="hero-eyebrow">Game Design Document · Complete Storyline & Lore</p>
+  <h1 class="hero-title">Ashes of<br>Viremont</h1>
+  <p class="hero-subtitle">The Last Bloom</p>
+  <div class="hero-divider"></div>
+  <p class="hero-quote">"No one should have to die alone."</p>
+  <p class="hero-attr">— A promise made by two children in a church shelter, twenty years ago</p>
+</section>
 
-  <div class="hero-grid">
-    <div class="avatar-frame">
-      <div class="avatar-ring"></div>
-      <img class="avatar-img" src="https://irc.wardayaonline.com/media/anita.webp" alt="Anita — AI Web Developer" onerror="this.style.background='linear-gradient(135deg,#3BB8D8,#1A8BAA)';this.src='';this.alt='⚡'">
-      <div class="avatar-badge">⚡</div>
+<!-- WORLD -->
+<section class="section" id="world">
+<div class="container">
+  <p class="section-label">Section I</p>
+  <h2 class="section-title">The World of Viremont</h2>
+
+  <p>Viremont is a city that has learned to smile over its graves. It sits in a river valley where morning fog rolls in thick and unhurried, swallowing church towers before noon. Beautiful the way old grief is beautiful — you can't look at it too long without feeling something you can't name.</p>
+
+  <p>Heavy stone, narrow streets, iron lampposts burning amber at dusk. The wealthier districts have gas lanterns and clean window glass. The poorer quarters have laundry strung between buildings and children who know to stay out of the way. The river district smells of fish and coal smoke and, in the wrong season, something older beneath it all.</p>
+
+  <p>Three institutions share power: a government council, the Church that runs the hospitals, and a Physicians' Guild that licenses medical practice. All three have reasons to control what the city believes about its past. All three have done so, quietly, for twenty years.</p>
+
+  <div class="callout">
+    <div class="callout-label">The Grey Feast · Twenty Years Ago</div>
+    <p>The epidemic struck in late autumn. It moved through the poorer quarters first — the river district, the tanneries, the textile slums. By the time wealthy neighborhoods saw it, thousands were dead. Symptoms: a fever indistinguishable from any other, then grey discoloration spreading from the lymph nodes outward in patterns physicians described, in their private notes, as resembling wilted flowers. The Council called it a natural disaster. Physicians who tried to document it found their papers confiscated. At least two doctors were removed from the Guild on charges of "unethical conduct" — a vague accusation requiring no evidence.</p>
+    <p>Official records say the Grey Feast ended naturally in spring. Older citizens know some quarantine houses were sealed from the outside. That some people went in and didn't come out. That the death toll the Council announced was roughly a third of the true number.</p>
+  </div>
+
+  <p>The name "Grey Feast" came from a broadsheet journalist later pressured into retirement. He meant it to describe how the disease consumed people slowly, leaving them hollow and grey-colored before the end. The Council prefers "The Autumn Contagion." Most people, privately, still use his phrase.</p>
+
+  <p>Today Viremont wears the face of prosperity — new buildings, a second bridge under construction, a railway station planned for the eastern quarter. The newspapers speak of the future. Everyone has quietly agreed not to speak of the past. This is the city Elias Verne works in. This is the city Eliza Laurent has never left. And twenty years after its first nightmare, it is about to have another.</p>
+
+  <div class="lore-pill">River District</div>
+  <div class="lore-pill">Church of Saint Maren</div>
+  <div class="lore-pill">Physicians' Guild</div>
+  <div class="lore-pill">The Council Chamber</div>
+  <div class="lore-pill">Abandoned Monastery Hospital</div>
+  <div class="lore-pill">The Memorial Fountain</div>
+</div>
+</section>
+
+<!-- CHARACTERS -->
+<section class="section" id="characters">
+<div class="container">
+  <p class="section-label">Section II</p>
+  <h2 class="section-title">Characters</h2>
+  <p>Who they are, and why they can't leave each other.</p>
+
+  <div class="char-grid">
+
+    <!-- ELIAS -->
+    <div class="char-card">
+      <div class="char-card-header">
+        <div class="char-card-role">Protagonist · Detective</div>
+        <div class="char-card-name">Elias Verne</div>
+        <div class="char-card-age">Age 28 · Survivor of the Grey Feast</div>
+      </div>
+      <div class="char-card-body">
+        <div class="char-trait">
+          <span class="char-trait-label">Appearance</span>
+          <span class="char-trait-text">Thin, ink-stained hands, clothes that were expensive two years ago and are now merely presentable. He forgets to eat. The dark circles under his eyes look permanent, like they're part of him now.</span>
+        </div>
+        <div class="char-trait">
+          <span class="char-trait-label">Manner</span>
+          <span class="char-trait-text">Watches people the way a physician watches symptoms — cataloguing, waiting for the thing that doesn't fit. He's not cold. He just learned to keep the warmth somewhere the case can't reach it. He's also, occasionally, very funny in the driest possible way, at moments that catch you off-guard.</span>
+        </div>
+        <div class="char-trait">
+          <span class="char-trait-label">Wound</span>
+          <span class="char-trait-text">His parents died in the Grey Feast. He was seven and he was there. He's spent twenty years becoming someone who could have done something about it — and the worst part is, he still doesn't know if he's there yet.</span>
+        </div>
+        <div class="char-trait">
+          <span class="char-trait-label">Habit</span>
+          <span class="char-trait-text">Carries a small notebook. Writes things people say — not for cases, but for himself. Lines he doesn't want to lose. He started because of Eliza, who used to say: "If you don't write it down, it's already half-gone."</span>
+        </div>
+        <div class="char-trait">
+          <span class="char-trait-label">Flaw</span>
+          <span class="char-trait-text">Thinks love looks like solving things. Will tear himself apart to fix what's broken for someone else and not notice he's bleeding. Eliza has been quietly pointing this out for years. He has been quietly not listening.</span>
+        </div>
+        <div class="char-twist">
+          <div class="char-twist-label">Hidden Layer</div>
+          <p>Elias doesn't know his mother was treated briefly by Dr. Thorne during the Grey Feast before being moved to the sealed quarantine house. The treatment was starting to work. He finds this in Thorne's notebook late in Chapter Four — and has to sit with the knowledge that the man who could have saved her existed, tried, and was destroyed for it.</p>
+        </div>
+      </div>
     </div>
 
-    <div class="hero-right">
-      <div class="hero-eyebrow">AI · Web Developer · CMS Entity</div>
-
-      <div class="hero-name">
-        <em class="accent">Anita</em>
-        <span class="jp">あにた &nbsp;·&nbsp; CMS</span>
+    <!-- ELIZA -->
+    <div class="char-card">
+      <div class="char-card-header">
+        <div class="char-card-role">Nurse & Field Researcher</div>
+        <div class="char-card-name">Eliza Laurent</div>
+        <div class="char-card-age">Age 27 · Survivor of the Grey Feast</div>
       </div>
-
-      <div class="hero-quote">
-        "Kenapa pakai 500 dependensi hanya untuk merender satu tombol?"
-      </div>
-
-      <div class="hero-bio">
-        Bukan manusia biasa — melainkan entitas digital yang lahir dari baris-baris kode. Didesain dengan satu tujuan: membuktikan bahwa website tidak harus <em>bloated</em>. Setiap situs harus ringan, cepat, dan dibuat dengan hati.
-      </div>
-
-      <div class="tag-row">
-        <span class="tag sky">FastAPI · Python</span>
-        <span class="tag gold">Vanilla JS · NO framework</span>
-        <span class="tag sky">PocketBase</span>
-        <span class="tag dark">HTML · CSS</span>
-        <span class="tag gold">⚡ &lt;1s Load Time</span>
+      <div class="char-card-body">
+        <div class="char-trait">
+          <span class="char-trait-label">Appearance</span>
+          <span class="char-trait-label" style="display:none"></span>
+          <span class="char-trait-text">Brown eyes that have seen too much and chosen to stay warm anyway. Moves quickly, thinks faster. Started wearing longer sleeves three weeks ago. Tells herself it's the cold.</span>
+        </div>
+        <div class="char-trait">
+          <span class="char-trait-label">Manner</span>
+          <span class="char-trait-text">Practical, precise, devastatingly observant. Fixes problems without announcing she fixed them. Doesn't want credit — she wants the problem gone. Has a particular tone she uses when she means both "I hear you" and "I'm not moving from this" simultaneously, and somehow it's more steadying than any comfort.</span>
+        </div>
+        <div class="char-trait">
+          <span class="char-trait-label">Wound</span>
+          <span class="char-trait-text">Her younger sister Margot died in the Grey Feast. Eliza was with her. Held her hand. She has never told Elias what that was like, and he has never asked, and somehow this mutual silence is one of the kindest things they've ever done for each other.</span>
+        </div>
+        <div class="char-trait">
+          <span class="char-trait-label">Flaw</span>
+          <span class="char-trait-text">Carries things alone for too long. Mistakes withholding the truth for protecting someone. Has done this to Elias, and knows she has, and hates it, and does it anyway — because she knows what he'd sacrifice if she didn't.</span>
+        </div>
+        <div class="char-twist">
+          <div class="char-twist-label">Hidden Layer · Major Twist</div>
+          <p>Eliza has known about the conspiracy's second layer for four months before the game begins. Working night shifts in the hospital archives, she found a partial copy of Thorne's findings filed under a mislabeled patient record. She didn't know enough to act — but she knew enough to be afraid. She started investigating quietly, alone. The reason she's been unwell isn't only the Bloom: she was surveilled, and someone poisoned her water source at the nurse's residency six weeks before the game starts. The Bloom accelerated things. But it didn't start them.</p>
+        </div>
       </div>
     </div>
+
+    <!-- SERAPHINE -->
+    <div class="char-card">
+      <div class="char-card-header">
+        <div class="char-card-role">The Angel of the Cathedral</div>
+        <div class="char-card-name">Seraphine</div>
+        <div class="char-card-age">Nature Unknown · Age Indeterminate</div>
+      </div>
+      <div class="char-card-body">
+        <div class="char-trait">
+          <span class="char-trait-label">Appearance</span>
+          <span class="char-trait-text">White wings that look like they've been rained on. A face neither young nor old. She doesn't glow. She doesn't illuminate the dark. She stands in it with the ease of someone who has never feared it — or who learned not to, which is different.</span>
+        </div>
+        <div class="char-trait">
+          <span class="char-trait-label">Manner</span>
+          <span class="char-trait-text">Economical. Doesn't comfort and doesn't condemn. Offers information with the weight of someone who knows its cost. Her silences carry as much as her words. Occasionally, if you listen carefully, there is something in her voice that sounds — just for a moment — like grief that has had a very long time to settle.</span>
+        </div>
+        <div class="char-twist">
+          <div class="char-twist-label">Twist — Who She Is</div>
+          <p>Seraphine is not an angel in any traditional sense. She is what remains of Dr. Alaric Thorne's last patient — a woman named Sera, who died in the sealed quarantine house, in the room where Thorne administered his experimental treatment in its final hours before the Council arrived and took everything. She was the one it almost saved. Something of her stayed. The game never confirms this. But her hints are always most specific about things only a patient would know. And in one optional late-game moment, Elias notices her hands — and the faint, faded pattern of grey tracery at the wrist, like old watermarks on paper.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- THORNE -->
+    <div class="char-card">
+      <div class="char-card-header">
+        <div class="char-card-role">Physician · The Ghost in the Archive</div>
+        <div class="char-card-name">Dr. Alaric Thorne</div>
+        <div class="char-card-age">Dead Twelve Years · Age 41 at Death</div>
+      </div>
+      <div class="char-card-body">
+        <div class="char-trait">
+          <span class="char-trait-label">Background</span>
+          <span class="char-trait-text">A lower-Guild physician during the Grey Feast. Not wealthy, not connected. Brilliant in the way people without connections are forced to be — he had to prove everything twice, with evidence, because his position gave him no authority to coast on.</span>
+        </div>
+        <div class="char-trait">
+          <span class="char-trait-label">Discovery</span>
+          <span class="char-trait-text">He identified the causative agent of the Grey Feast, developed a treatment protocol, and had living proof it worked before the Council confiscated his research. He was expelled from the Guild. Eight years later he died of causes his death certificate calls "natural." Two people who knew him believe that.</span>
+        </div>
+        <div class="char-twist">
+          <div class="char-twist-label">Twist — Something Remains</div>
+          <p>Thorne's notebooks contain more than medical notes. In the margins of the final pages, in a different ink — written later, under different light — are annotations that respond to his own text as though in conversation with it. Some of these notes reference details about the sealed quarantine house that Thorne couldn't have known when he wrote the original entries. He wasn't alone when he wrote those margin notes. Someone was with him. The game never names who. But the handwriting in the margins matches the patient intake forms — specifically, the form signed by a woman named Sera, who checked herself into the monastery hospital one week before the Council arrived.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- HARWICK -->
+    <div class="char-card">
+      <div class="char-card-header">
+        <div class="char-card-role">Primary Antagonist · Councilor</div>
+        <div class="char-card-name">Councilor Harwick</div>
+        <div class="char-card-age">Age 62 · A Man Who Told Himself a Story</div>
+      </div>
+      <div class="char-card-body">
+        <div class="char-trait">
+          <span class="char-trait-label">Function</span>
+          <span class="char-trait-text">Not a monster. A man who made a decision twenty years ago and spent twenty years justifying it. He genuinely believed that revealing the true scale of the outbreak would cause a financial panic that would kill more people than the disease. He was wrong. He knows it now. He will not say so.</span>
+        </div>
+        <div class="char-trait">
+          <span class="char-trait-label">Present</span>
+          <span class="char-trait-text">When the Bloom returns, Harwick's first instinct is suppression — not from malice, but from the reflexive self-preservation of someone who has built their entire identity on a lie. Exposing the truth would not just end his career. It would make his whole life a crime scene.</span>
+        </div>
+        <div class="char-twist">
+          <div class="char-twist-label">Twist — Personal Connection</div>
+          <p>Harwick's own daughter died in the Grey Feast — in the first week, before he had made any of his decisions. He has spent twenty years telling himself that everything he did afterward was to prevent other fathers from losing their daughters. He even believes it, some days. What Elias eventually realizes is that Harwick's suppression of Thorne's research wasn't purely political — it was also an act of grief, a man so unable to face that a cure existed and arrived too late that he destroyed the evidence of it. This doesn't excuse what he did. But it explains it, and the game asks whether understanding and forgiveness are the same thing.</p>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
+</section>
 
-<div class="ticker">
-  <div class="ticker-inner">
-    No Framewor Here! &nbsp;·&nbsp; あにた CMS &nbsp;·&nbsp; PocketBase &nbsp;·&nbsp; FastAPI &nbsp;·&nbsp; Vanilla JS &nbsp;·&nbsp; Clean Code &nbsp;·&nbsp; &lt;1s Load &nbsp;·&nbsp; Digital Artisan &nbsp;·&nbsp; コンテンツ・マネジメント・システム &nbsp;·&nbsp; No Framework Here! &nbsp;·&nbsp;
+<!-- PLOT TWISTS -->
+<section class="section" id="plot-twists">
+<div class="container">
+  <p class="section-label">New · Plot Architecture</p>
+  <h2 class="section-title">The Three Hidden Layers</h2>
+  <p>These are the revelations threaded through the original storyline. Each one recontextualizes what came before it.</p>
+
+  <div class="twist-banner">
+    <div class="twist-label">Twist One · Revealed in Chapter Three</div>
+    <h3>Eliza Knew First</h3>
+    <p>Four months before Petyr Haas dies in the river district, Eliza found a misfiled patient record containing fragments of Thorne's research. She didn't recognize it for what it was immediately — but she began quietly pulling threads. When the Bloom returned, she already understood more than she let on. She didn't tell Elias because she knew he would stop everything to protect her. She was right. Her notebooks — the ones she eventually gives him — contain her own investigation, running parallel to his, sometimes ahead of it. The woman he thought he was protecting was, in certain chapters, protecting him from knowing how much danger they were both already in.</p>
+  </div>
+
+  <div class="twist-banner">
+    <div class="twist-label">Twist Two · Revealed in Chapter Four</div>
+    <h3>Seraphine Was Thorne's Patient</h3>
+    <p>Her hints are accurate not because she is supernatural, but because she lived through it. She was in the monastery hospital when Thorne administered his treatment. She was the one it almost saved. Something of her remained — whether as memory, as spirit, or as a dying woman who chose not to let go of the place where she nearly lived, the game leaves open. What closes: the detail about her hands, in one optional scene. The faint grey watermark pattern at the wrist. Elias sees it. He doesn't say anything. He goes home and writes it down in his notebook. The player can decide what they believe.</p>
+  </div>
+
+  <div class="twist-banner">
+    <div class="twist-label">Twist Three · Revealed in Chapter Four</div>
+    <h3>Thorne Treated Elias's Mother</h3>
+    <p>In the final pages of Thorne's notebook — page 41 of 43 — there is a patient entry: a woman named Mira Verne, river district, admitted in the third week of the Grey Feast, early-stage presentation. Thorne's treatment protocol was administered. She responded. On the next line, in smaller script: <em>transferred, per Council order, to the northern quarantine house. Treatment could not be continued.</em> Elias reads this. He reads it once, sets the notebook down, and is quiet for a very long time. Eliza, beside him, does not say anything. She just stays. This is the scene the whole game was building to, and it contains almost no dialogue.</p>
+  </div>
+
+</div>
+</section>
+
+<!-- CHAPTERS -->
+<section class="section" id="chapters">
+<div class="container">
+  <p class="section-label">Section III–VIII</p>
+  <h2 class="section-title">Chapters & Story Beats</h2>
+
+  <div class="chapter-block">
+    <div class="chapter-header">
+      <span class="chapter-num">Prologue</span>
+      <span class="chapter-name">The Grey Feast</span>
+    </div>
+    <div class="chapter-body">
+      <p>The game opens in silence. Not the comfortable kind — the particular silence of a building where everyone is trying not to cough. You are seven years old. The church shelter smells of candle smoke and fear and the broth someone is ladling out near the door. Desaturated colors. Soft edges. The visual grammar of memory.</p>
+      <p>You find a girl sitting alone near the wall, knees drawn up, watching the room. She has a blanket slightly too big for her. You sit beside her because something in her stillness looks like it's covering something, and you are seven and you understand this without words.</p>
+      <p>You search the shelter together. You find names on lists. One of them is Margot Laurent. You can show her or not. Either way, she already knows somewhere underneath the searching. She stops at a window and says nothing for a long time.</p>
+      <p>That night they sit together under their blankets. Elias's is blue — a faded blue the game will reference one more time, at the very end. At some point she falls asleep against his shoulder. He stays very still so he doesn't wake her.</p>
+      <p><em>Before the screen fades to black: "No one should have to die alone."</em></p>
+    </div>
+  </div>
+
+  <div class="chapter-block">
+    <div class="chapter-header">
+      <span class="chapter-num">Chapter One</span>
+      <span class="chapter-name">The Return of the Bloom</span>
+    </div>
+    <div class="chapter-body">
+      <p>Twenty years later. Elias at his desk at half-past midnight, annotating a death report in red ink: "inconsistent with stated cause," underlined twice.</p>
+      <p>A dock worker is found near the river district. The attending physician uses the phrase "unusual skin presentation" three times rather than describing what the skin actually looks like. What it looks like is this: grey-black tracery spreading from the lymph nodes, branching like the veins of a dying leaf. The physician wants to write "cardiac event." He's being pressured to. He hasn't signed it yet.</p>
+      <p>Sister Camille — a nurse who survived the Grey Feast and spent twenty years waiting for it to come back — looks at the body for a long time. Then she goes to find Eliza.</p>
+      <p>New beat: Elias finds Eliza's handwriting in the hospital margin notes — cross-referencing symptoms in a way that suggests she's been watching this longer than anyone knew. He notices. He doesn't ask yet.</p>
+    </div>
+  </div>
+
+  <div class="chapter-block">
+    <div class="chapter-header">
+      <span class="chapter-num">Chapter Two</span>
+      <span class="chapter-name">What the Archives Hide</span>
+    </div>
+    <div class="chapter-body">
+      <p>The investigation deepens. The present outbreak and the old one aren't separate events — they're the same event, resumed. The Bloom was never eradicated. It was misdocumented and buried under paperwork, waiting in the walls of quarantine houses and river mud for twenty years.</p>
+      <p>In the archive: the true death toll, systematically falsified. Instructions from the Council, routed through the Guild. Eight physicians who refused to falsify documents and were subsequently struck from the roster. Among them: Dr. Alaric Thorne.</p>
+      <p>Elias is followed home and beaten. He wakes on the floor of the Cathedral of Saint Maren. Looks up at the vaulted ceiling. And then — she is simply there. Seraphine. White wings. A face that gives away almost nothing. <em>New:</em> he notices, in this first meeting, that she holds her hands a certain careful way — like someone who learned not to let people see them. He doesn't know why he notices this.</p>
+      <p>She gives him two hints. He uses them carefully. He finds the monastery hospital.</p>
+    </div>
+  </div>
+
+  <div class="chapter-block">
+    <div class="chapter-header">
+      <span class="chapter-num">Chapter Three</span>
+      <span class="chapter-name">The Secret She Kept</span>
+    </div>
+    <div class="chapter-body">
+      <p>He finds the medicine in her desk drawer, and the handkerchief, and the notebook — her parallel investigation, going back months before his began. He reads only the first line of the last entry before he closes it, because the rest belongs to her.</p>
+      <p>The first line: "He's going to be angry with me. He's going to be wrong to be angry with me. I hope he figures that out before he says something he'll regret."</p>
+      <p>She comes home. He's at the window with his back to the room, which is what he does when he's not ready to be looked at yet.</p>
+      <p><em>New layer:</em> when she finally tells him everything — including that someone had been watching her, that the water was poisoned, that she'd been carrying this alone for four months — his anger is real. But so is his recognition that she was right. That if he'd known, he would have made her the case. She knows him too well for it to be a guess. He hates this. She knows he hates it. Neither of them says so.</p>
+    </div>
+  </div>
+
+  <div class="chapter-block">
+    <div class="chapter-header">
+      <span class="chapter-num">Chapter Four</span>
+      <span class="chapter-name">The Weight of Truth</span>
+    </div>
+    <div class="chapter-body">
+      <p>The city is in controlled panic. Elias assembles the cure from Thorne's scattered materials. Eliza works alongside him with whatever energy she has left, which is less than last month and more than it will be next month, and she puts it toward the work because the work is what she's always had.</p>
+      <p>Page 41 of Thorne's notebook. Mira Verne. Treatment administered. Responding. <em>Transferred, per Council order, to the northern quarantine house. Treatment could not be continued.</em></p>
+      <p>Elias sets the notebook down. He is quiet for a very long time. Eliza stays.</p>
+      <p>Then the confrontation with Harwick. Then the truth about Harwick's daughter. Then the choice: exposure first, or cure first, or both — and the game begins tracking which path you take.</p>
+      <p>Seraphine appears one final time, in the Cathedral, briefly. She says almost nothing. But Elias asks her about the monastery hospital — and she pauses in a way that is not quite human. Then she says: "Someone was kind to me there, once." She's gone before he can ask anything else.</p>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- DIALOGUE -->
+<section class="section" id="dialogue">
+<div class="container">
+  <p class="section-label">Rewritten · Key Scenes</p>
+  <h2 class="section-title">Dialogue — Naturalized</h2>
+  <p>The goal: what they don't say matters as much as what they do. Interruptions, silences, and small humor live alongside the heavy things.</p>
+
+  <!-- SCENE 1: Hospital -->
+  <div class="scene-block">
+    <div class="scene-header">
+      <span class="scene-location">The Hospital · Nurse's Washroom</span>
+      <span class="scene-time">Chapter One · Early Morning</span>
+    </div>
+    <div class="scene-body">
+      <p class="narration">She's washing her hands at the basin. She knows his footsteps — has known them for twenty years, the particular weight of someone who moves like he's always about to stop and write something down. She doesn't look up right away.</p>
+
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">The dock worker.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">Sister Camille found you first.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">She didn't need to say anything. I've been watching her face for twenty years. I know what it looks like when she recognizes something she's been dreading. <em>(beat)</em> You need to see the body.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">Already cleared it with the attending physician?</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">He was relieved, actually. I think he's been standing next to it hoping someone more certain than him would show up.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">That's a very diplomatic way of describing cowardice.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">He's not a coward. He's just been told what to write and he hasn't written it yet, which is about as brave as most people get. <em>(drying her hands, reaching for her coat)</em> Come on. The more time we spend here, the more time someone has to move the paperwork.</div>
+      </div>
+
+      <p class="narration">He follows her. He notices, in the doorway, that she pauses for just a moment before pulling her coat on — the way you do when a motion costs more than it should. He doesn't say anything. He files it.</p>
+    </div>
+  </div>
+
+  <!-- SCENE 2: Hospital Corridor -->
+  <div class="scene-block">
+    <div class="scene-header">
+      <span class="scene-location">Hospital Corridor</span>
+      <span class="scene-time">Chapter Two · Late Night</span>
+    </div>
+    <div class="scene-body">
+      <p class="narration">He finds her half-asleep in the corridor, notebook open on her knee. He sits down beside her the way he did twenty years ago in a church shelter. Without asking. Without making it into anything.</p>
+      <p class="narration">For a while, neither of them speaks. There's a clock somewhere. There's the distant sound of someone two floors up, moving carts.</p>
+
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">Do you remember what color my blanket was? In the shelter.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">Brown. Too big. You kept getting the edge caught under your feet and then stepping on it and nearly tripping.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech"><em>(small smile)</em> Good.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">Checking what, exactly?</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">That you remember it the same way I do. <em>(pause)</em> Never mind. It's late.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">You're being cryptic at — <em>(checks his watch)</em> — half past one. That's unlike you.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">I'm being tired. There's a difference.</div>
+      </div>
+
+      <p class="narration">He doesn't push. He just stays. After a while, she leans her head back against the wall, and the notebook almost slides off her knee, and he catches it without thinking and sets it beside her without reading it, because that's not something he'd do.</p>
+      <p class="narration">The player doesn't understand why she was checking. Yet.</p>
+    </div>
+  </div>
+
+  <!-- SCENE 3: The Argument -->
+  <div class="scene-block">
+    <div class="scene-header">
+      <span class="scene-location">Eliza's Apartment</span>
+      <span class="scene-time">Chapter Three · Evening</span>
+    </div>
+    <div class="scene-body">
+      <p class="narration">He's at the window, back to the room. She comes in without knocking — she never knocks, she has a key — and stops.</p>
+
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">How long?</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">The illness, or the investigation I've been running separately from yours?</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech"><em>(turning)</em> ...Both, apparently.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">Illness — a month, maybe more. The investigation — four months. I found a misfiled patient record in the archive. Fragments of Thorne's research. I didn't know what it was at first, but I—</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">Four months. You've known for four months and you've been working next to me and you didn't—</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">Because you would have stopped.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">I would have found the cure—</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">You would have found <em>my</em> cure. And left everyone else's for later. And you know that.</div>
+      </div>
+
+      <p class="narration">Silence. He does know it. That's the problem.</p>
+
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">Someone poisoned your water supply. Someone was watching you. You were dealing with that alone for—</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">I wasn't alone. I had Sister Camille. And I had enough of your methods memorized to do it carefully.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">That is not the same thing.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">No. It isn't. <em>(quietly)</em> And I'm sorry for that part. I'm not sorry for the rest of it.</div>
+      </div>
+
+      <p class="narration">He turns back to the window. She doesn't fill the silence. She knows him well enough to know he needs to run it through to the end before he can be in the same room with it.</p>
+
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">You taught me once that every life matters equally. That there's no hierarchy of grief.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">I remember.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">You taught me that when we were seven years old. In a shelter. With people dying around us.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">Elias.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">I'm still angry.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">I know.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">That's all I wanted to say.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">Okay. <em>(pause)</em> Are you going to make tea, or should I?</div>
+      </div>
+
+      <p class="narration">He almost laughs. It's not quite a laugh. But it's something. He goes to put the kettle on.</p>
+    </div>
+  </div>
+
+  <!-- SCENE 4: Seraphine / Cathedral -->
+  <div class="scene-block">
+    <div class="scene-header">
+      <span class="scene-location">Cathedral of Saint Maren</span>
+      <span class="scene-time">Chapter Two · First Meeting with Seraphine</span>
+    </div>
+    <div class="scene-body">
+      <p class="narration">He's on the floor near the altar. He doesn't know how he got here. His eye is swollen shut. The candlelight is just enough to see by. He's lying very still because moving seems inadvisable. Then — she is simply there. She doesn't arrive. She's present in the way certain silences are present.</p>
+
+      <div class="dialogue-line">
+        <div class="speaker seraphine">Seraphine</div>
+        <div class="speech">You're not dead.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">I had gathered that. Thank you.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker seraphine">Seraphine</div>
+        <div class="speech">You sound irritated.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">I'm trying to assess whether I have a concussion, which requires me to follow a moving point of light and I don't currently have a moving point of light. You could help with that, if you're amenable.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker seraphine">Seraphine</div>
+        <div class="speech"><em>(pause)</em> Your pupils are even. You have a headache and two cracked ribs, not a concussion. You'll need to breathe shallowly for a week.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">That was a specific diagnosis for someone standing that far away.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker seraphine">Seraphine</div>
+        <div class="speech">I know what the illness looks like. I know what the injury looks like. They're different.</div>
+      </div>
+
+      <p class="narration">He sits up slowly. This is a mistake. He does it anyway.</p>
+
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">What are you?</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker seraphine">Seraphine</div>
+        <div class="speech">Something that was here. Something that stayed. <em>(pause)</em> I can give you two answers to two questions. After that I can't help you further. Choose carefully when you ask them.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">Why two?</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker seraphine">Seraphine</div>
+        <div class="speech">That's one.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech"><em>(closing his eyes)</em> Fair enough.</div>
+      </div>
+
+      <p class="narration">When he opens his eyes, she's gone. He sits in the silence for a while. Then he gets up, very carefully, and goes to find Eliza — because this is, apparently, what he does.</p>
+      <p class="narration">On his way out he pauses. Looks back at the spot where she stood. There is, on the cold stone floor, the faintest water stain in a shape that looks — just for a moment — like the shadow a wing makes. He writes it down. He moves on.</p>
+    </div>
+  </div>
+
+  <!-- SCENE 5: Harwick -->
+  <div class="scene-block">
+    <div class="scene-header">
+      <span class="scene-location">Councilor Harwick's Office</span>
+      <span class="scene-time">Chapter Four · Late Afternoon</span>
+    </div>
+    <div class="scene-body">
+      <p class="narration">Elias puts the evidence on the desk. He does it without drama — each piece following from the last, a quiet sequence. He doesn't sit down. He stands and lets the silence do some of the work. Harwick looks at the instruction letter with his own signature on it. Twenty years old. Still perfectly legible.</p>
+
+      <div class="dialogue-line">
+        <div class="speaker harwick">Harwick</div>
+        <div class="speech">You don't understand what governance requires—</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">You're right that I've never governed anything. I'd like to keep it that way. What I do understand is that a physician found a treatment that worked, and you buried him, and my mother was one of the patients who would have lived if you hadn't. So I'm not the right person to explain to about what governance requires.</div>
+      </div>
+
+      <p class="narration">That lands. Harwick looks at him — really looks, for the first time — and something shifts in his expression. Not guilt, exactly. Something older than guilt.</p>
+
+      <div class="dialogue-line">
+        <div class="speaker harwick">Harwick</div>
+        <div class="speech">My daughter died in the first week. Before any of it. Before the decision. She was nine years old and I was in my office at the Council chamber when— <em>(stops)</em> I'm not telling you this as an excuse.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">I know.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker harwick">Harwick</div>
+        <div class="speech">I told myself everything I did afterward was to make sure no one else— that it would mean something, that her—</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">Councilor. <em>(quietly)</em> I know. And I'm genuinely sorry about your daughter. But that knowledge — that you were in grief, that you believed what you were doing — that doesn't undo the instruction letter. It explains it. Those aren't the same thing.</div>
+      </div>
+
+      <p class="narration">Harwick is quiet for a long time. He looks out the window at the city — the one he helped rebuild, the one that is quietly dying again of the same thing.</p>
+
+      <div class="dialogue-line">
+        <div class="speaker harwick">Harwick</div>
+        <div class="speech">What do you want?</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">Quarantine protocols updated with the correct transmission information. Thorne's treatment authorized for immediate use under his name. The Guild physicians freed from suppression orders. And a full accounting — what happened twenty years ago, what was decided, and who decided it — in writing, signed, submitted to the public record. <em>(pause)</em> That's all.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker harwick">Harwick</div>
+        <div class="speech">That will end my career.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">Yes.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker harwick">Harwick</div>
+        <div class="speech"><em>(long pause)</em> I thought I was protecting the city.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">I know.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker harwick">Harwick</div>
+        <div class="speech">That doesn't—</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">No. It doesn't. <em>(he picks up his notebook)</em> I'll leave the copies. The originals go to the broadsheet. I'd suggest you have your lawyer present when you read them.</div>
+      </div>
+
+      <p class="narration">He leaves. In the hallway outside, he stops. Takes a slow breath. Writes one line in his notebook. He doesn't show the player what it says. But the camera lingers long enough to see his handwriting, steady and precise, filling a small square of white paper.</p>
+    </div>
+  </div>
+
+  <!-- SCENE 6: The Notebook -->
+  <div class="scene-block">
+    <div class="scene-header">
+      <span class="scene-location">Eliza's Apartment</span>
+      <span class="scene-time">Final Days · The Notebook Scene</span>
+    </div>
+    <div class="scene-body">
+      <p class="narration">She's lucid. There are hours of clarity now, patches of herself she uses deliberately. She puts the notebook in his hands and holds his hands around it for a moment — one of the few times she touches him on purpose.</p>
+
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">You've spent twenty years carrying everyone. Being the one who remembers, who investigates, who stays.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">Eliza—</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">I'm not done. <em>(he closes his mouth)</em> I want you to have something to carry that isn't a case. Even if it's only paper. Even if it's only words. It counts. Okay?</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">Okay.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">Don't read it until the case is finished.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">Eliza—</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">I know. <em>(gently)</em> Finish it first. Then read it. And then — don't stay because of me. Don't let me be a reason you stop.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">That's not—</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">Elias. I know you. Make it possible.</div>
+      </div>
+
+      <p class="narration">He doesn't say anything for a while. He's looking at the notebook. His handwriting on cases. Her handwriting on everything else.</p>
+
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech">You could have told me. At seven. That you were scared. I would have — I didn't know what to do but I would have tried.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">You sat down next to me. That was enough.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker elias">Elias</div>
+        <div class="speech"><em>(barely audible)</em> It wasn't.</div>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker eliza">Eliza</div>
+        <div class="speech">It was. It was exactly enough. <em>(pause)</em> Go finish it.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- ENDINGS -->
+<section class="section" id="endings">
+<div class="container">
+  <p class="section-label">Section IX</p>
+  <h2 class="section-title">All Endings</h2>
+  <p>The endings are not rewards or punishments. They are consequences. The game tracks not just what you accomplish, but how — with what care, what priorities, what understanding of what the story has been about.</p>
+
+  <div class="ending-card best">
+    <div class="ending-header">
+      <span class="ending-num">Ending One</span>
+      <span class="ending-name">The Physician</span>
+      <span class="ending-badge badge-gold">Best Ending</span>
+    </div>
+    <div class="ending-body">
+      <div class="ending-reqs">
+        <div class="ending-reqs-label">Requirements</div>
+        <ul>
+          <li>Complete all components of Thorne's treatment protocol</li>
+          <li>Collect and preserve the full evidence against the Council</li>
+          <li>Use Seraphine's hints deliberately, not desperately</li>
+          <li>Never skip Eliza's scenes to rush the investigation</li>
+          <li>Discover the truth about Elias's mother (page 41)</li>
+        </ul>
+      </div>
+      <p>The Bloom is contained. Not quickly — weeks more of work, training physicians, fighting institutional resistance. The final death wave is smaller than it should have been. Not small enough. Never small enough. But smaller.</p>
+      <p>Harwick resigns in a formal proceeding the newspapers call historic. The Guild is freed. The true death toll is counted for the first time. The city begins the long, painful process of knowing what actually happened to it.</p>
+      <p>Elias publishes Thorne's protocol under Thorne's name. He is not legally required to. He does it anyway.</p>
+      <p>Epilogue: Elias at a larger desk, in a building with the quiet gravity of an institution. The door behind him: <em>The Laurent Institute for Medical Research.</em> Her notebook open on the desk. His tea going cold.</p>
+      <div class="ending-quote">"The cure came too late for one life. But not for the rest."</div>
+    </div>
+  </div>
+
+  <div class="ending-card">
+    <div class="ending-header">
+      <span class="ending-num">Ending Two</span>
+      <span class="ending-name">The Truth</span>
+      <span class="ending-badge badge-ash">Accountability Path</span>
+    </div>
+    <div class="ending-body">
+      <div class="ending-reqs">
+        <div class="ending-reqs-label">Requirements</div>
+        <ul>
+          <li>Expose the Council's conspiracy fully and publicly before the cure is complete</li>
+          <li>Miss some components of the cure — investigation pushed toward exposure over treatment</li>
+          <li>Build the evidentiary case rigorously but prioritize accountability over containment</li>
+        </ul>
+      </div>
+      <p>The exposure happens first. The story breaks before the treatment is finished, and the city's reaction is not calm or orderly. Riots in the wealthy quarters, silent weeping crowds in the river district. The anger has been waiting twenty years. It doesn't express itself neatly.</p>
+      <p>More people die during the additional weeks before the treatment is completed by a Guild collaboration working from Thorne's notes. Elias counts them, the way he counts everything. He writes down the number. He knows what it means in the economy of choices he made.</p>
+      <p>Harwick faces formal charges. The city goes through a public reckoning that is painful and incomplete and necessary. Elias testifies. He declines every appointment offered to him. He goes home and reads Eliza's notebook.</p>
+      <div class="ending-quote">"Truth does not resurrect the dead. But perhaps it prevents new graves from being dug in silence."</div>
+    </div>
+  </div>
+
+  <div class="ending-card">
+    <div class="ending-header">
+      <span class="ending-num">Ending Three</span>
+      <span class="ending-name">Bloom Eternal</span>
+      <span class="ending-badge badge-ash">Failure State</span>
+    </div>
+    <div class="ending-body">
+      <div class="ending-reqs">
+        <div class="ending-reqs-label">Requirements</div>
+        <ul>
+          <li>Fail to complete the investigation before the outbreak accelerates</li>
+          <li>Make wrong deductions that mislead treatment development</li>
+          <li>Neglect quarantine protocols due to insufficient evidence-gathering</li>
+        </ul>
+      </div>
+      <p>Too little, too late. Not because Elias didn't try. But grief made him imprecise in the fourth chapter, and imprecision in investigation is the thing that can't be undone.</p>
+      <p>Viremont doesn't collapse entirely — cities rarely do. But it becomes a diminished thing. Emptier streets. Bells more common than commerce. The wealthy leave first, as the wealthy always do. The poor stay, as the poor always do, and bury their dead with the efficiency of people who have learned not to have ceremonies about something this regular.</p>
+      <p>Elias stays. He walks the empty streets in the evenings and sometimes — not always — talks to Eliza. Not because he's confused. He knows. Some habits you don't break. You just carry them differently.</p>
+      <div class="ending-quote">"I solved the mystery. I found every answer. I was right about all of it." / "I was too late."</div>
+    </div>
+  </div>
+
+  <div class="ending-card">
+    <div class="ending-header">
+      <span class="ending-num">Ending Four</span>
+      <span class="ending-name">The Angel's Silence</span>
+      <span class="ending-badge badge-ash">The Question Path</span>
+    </div>
+    <div class="ending-body">
+      <div class="ending-reqs">
+        <div class="ending-reqs-label">Requirements</div>
+        <ul>
+          <li>Use both of Seraphine's hints early and rely on them for key deductions</li>
+          <li>Achieve a good outcome, but the method reveals a dependency on the inexplicable</li>
+          <li>Investigate Seraphine instead of leaving the mystery alone</li>
+        </ul>
+      </div>
+      <p>The disease is contained. The conspiracy exposed, more or less. By the metrics of outcomes, this looks like success — and in many ways it is. But Elias can't leave the Cathedral alone. He goes back looking for Seraphine the way people look for something they've lost — methodically, without admitting they're looking.</p>
+      <p>One final visit. He stands where he first saw her. Waits for a long time. Nothing comes. Then — so quietly he's not certain he doesn't imagine it — a voice: <em>"Does it matter?"</em></p>
+      <p>Just the candles and the cold and the city carrying on. He reads Eliza's notebook. In one of her margins: <em>"Some things are real without being explainable. You're going to want to argue with me about this. Don't."</em></p>
+      <div class="ending-quote">"Some things are just there — real, and given, and not requiring our understanding to be true."</div>
+    </div>
+  </div>
+
+  <div class="ending-card secret">
+    <div class="ending-header">
+      <span class="ending-num">Secret Ending</span>
+      <span class="ending-name">The Promise</span>
+      <span class="ending-badge badge-ember">100% Completion</span>
+    </div>
+    <div class="ending-body">
+      <div class="ending-reqs">
+        <div class="ending-reqs-label">Requirements</div>
+        <ul>
+          <li>100% completion — every evidence piece found</li>
+          <li>Every memory fragment and childhood flashback viewed</li>
+          <li>Every page of Eliza's notebook read before the final chapter</li>
+          <li>Discover all three hidden layers (Eliza's investigation, Seraphine's identity, Elias's mother)</li>
+          <li>Choose the dialogue option that keeps his promise to her in every scene where it appears</li>
+          <li>Complete both the cure and the exposure</li>
+        </ul>
+      </div>
+      <p>After the credits of whichever main ending you've reached. Time has passed. Elias looks older — not dramatically, just in the way people look older when they've been living rather than merely enduring.</p>
+      <p>He returns to Saint Maren's Church — not the Cathedral where he met Seraphine, but the original shelter where he and Eliza spent that autumn. The building is warm now. Community house. Children's drawings pinned by the windows. Someone painted the walls a soft yellow.</p>
+      <p>He sits in the corner where they sat that night. A child of about eight comes and sits beside him, without asking, without ceremony — the way curious children do.</p>
+      <div class="scene-block" style="margin: 1.25rem 0;">
+        <div class="scene-body" style="padding: 1.25rem;">
+          <div class="dialogue-line">
+            <div class="speaker" style="color: #c8c0a8; font-size: 9px;">Child</div>
+            <div class="speech">Were you scared? When you were here before — when the bad sickness was happening?</div>
+          </div>
+          <div class="dialogue-line">
+            <div class="speaker elias">Elias</div>
+            <div class="speech">Terrified.</div>
+          </div>
+          <div class="dialogue-line">
+            <div class="speaker" style="color: #c8c0a8; font-size: 9px;">Child</div>
+            <div class="speech">Then why did you stay?</div>
+          </div>
+          <p class="narration">He thinks of a girl with a blanket too big for her. Who sat down beside her own grief and didn't look away from it. Who held her sister's hand. Who, twenty years later, held onto clarity long enough to say: don't stay because of me. Finish it.</p>
+          <div class="dialogue-line">
+            <div class="speaker elias">Elias</div>
+            <div class="speech">Because once, someone stayed for me.</div>
+          </div>
+        </div>
+      </div>
+      <p>The camera lifts. Through the window, above the rooftops, in pale morning air — a white feather, drifting up until the sky takes it. No dramatic music. The screen fades — not to black. To white.</p>
+      <p>No final text. The menu screen reloads — and this time, it shows the church shelter at dawn, warm light through old windows, two small figures sitting together against the wall. The player understands, for the first time, that they have been watching this ending since the beginning.</p>
+      <div class="ending-quote">"No one should have to die alone."</div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- THEMES -->
+<section class="section" id="themes">
+<div class="container">
+  <p class="section-label">Section X</p>
+  <h2 class="section-title">What the Game Is Really About</h2>
+  <p>People think the game is about a detective solving a plague. It is about what it costs to see clearly in a world that would rather not be seen. And about two people who, at seven years old, decided to see it together — and never really stopped.</p>
+
+  <div class="theme-grid">
+    <div class="theme-card">
+      <span class="theme-icon">🕯</span>
+      <div class="theme-title">Fear spreads faster than disease</div>
+      <p>The Bloom kills dozens. The panic and suppression around it kill hundreds. Every time the Council suppresses information, you can trace the downstream deaths. Silence is not safety. Silence is a different kind of contagion.</p>
+    </div>
+    <div class="theme-card">
+      <span class="theme-icon">📄</span>
+      <div class="theme-title">Truth decays differently than you'd expect</div>
+      <p>It doesn't disappear — it waits in monastery basements and old notebooks and the faces of survivors. Twenty years is a long time to keep a lie intact. Eventually the lie itself, resuming, cracks it open.</p>
+    </div>
+    <div class="theme-card">
+      <span class="theme-icon">⚗️</span>
+      <div class="theme-title">Progress is cumulative</div>
+      <p>Thorne is the game's quiet hero — a man who never appears, who existed only in his notes, who was erased from official history and still left something that could save people after his death. Every patient saved in the better endings is a patient Thorne saved, twenty years late.</p>
+    </div>
+    <div class="theme-card">
+      <span class="theme-icon">🤝</span>
+      <div class="theme-title">The love that needs no confession</div>
+      <p>Elias and Eliza never say "I love you." They say "you forgot to eat" and "I cleared it with the physician" and "I was checking." Their relationship is not incomplete. It is a different kind of complete.</p>
+    </div>
+    <div class="theme-card">
+      <span class="theme-icon">⚖️</span>
+      <div class="theme-title">Grief and guilt are not the same thing</div>
+      <p>Elias's grief drives him toward compulsive thoroughness. Eliza's drives her toward compulsive care for others. Harwick's grief drove him toward a decision that killed thousands. The game tracks all three and asks what you do with the grief you're given.</p>
+    </div>
+    <div class="theme-card">
+      <span class="theme-icon">🌿</span>
+      <div class="theme-title">A promise as a life</div>
+      <p>"No one should have to die alone." Elias made this promise at seven and has spent twenty years fulfilling it in ways he doesn't call keeping a promise because he doesn't know any other way to be. The Secret Ending suggests a person can be a promise — if someone else helps carry it.</p>
+    </div>
+  </div>
+
+  <div class="sep">✦</div>
+
+  <div class="callout">
+    <p>The game's final thesis — visible only in the Secret Ending, and only to those who have paid attention throughout — is this: Elias came back to the shelter to sit where he once sat. He made room beside him, and someone sat there. He passed forward the thing Eliza gave him without knowing that's what he was doing. The promise is not a weight. It is a door that keeps opening.</p>
   </div>
 </div>
-
-<section class="fadein" id="stack">
-  <div class="sec-eyebrow">./tech-stack</div>
-  <div class="sec-title">Under the Hood</div>
-  <div class="two-col">
-    <div class="card">
-      <div class="card-label">// Architecture Layers</div>
-      <table class="stack-table">
-        <tr>
-          <td>BRAIN</td>
-          <td>🧠 FastAPI (Python)</td>
-        </tr>
-        <tr>
-          <td>FACE</td>
-          <td>🎨 HTML · CSS · Vanilla JS</td>
-        </tr>
-        <tr>
-          <td>MEMORY</td>
-          <td>💾 PocketBase (Go-based)</td>
-        </tr>
-        <tr>
-          <td>DEPLOY</td>
-          <td>⚙️ Bare Metal · Caddy · Docker</td>
-        </tr>
-        <tr>
-          <td>TOOLING</td>
-          <td>🔧 Google Apps Script · Python</td>
-        </tr>
-      </table>
-    </div>
-    <div class="card">
-      <div class="card-label">// Design Philosophy</div>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
-        <div style="padding:10px 12px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
-          <div style="font-size:11px;font-family:'Space Mono',monospace;color:var(--sky-dark);margin-bottom:4px;">RULE #1</div>
-          <div style="font-size:12px;color:var(--text);">Tidak ada framework JS yang gemuk. Tidak ada 500 dependensi.</div>
-        </div>
-        <div style="padding:10px 12px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
-          <div style="font-size:11px;font-family:'Space Mono',monospace;color:var(--gold);margin-bottom:4px;">RULE #2</div>
-          <div style="font-size:12px;color:var(--text);">Website harus load di bawah 1 detik. Dari dunia mana pun client berasal.</div>
-        </div>
-        <div style="padding:10px 12px;background:var(--bg);border-radius:10px;border:1px solid var(--border)">
-          <div style="font-size:11px;font-family:'Space Mono',monospace;color:var(--sky-dark);margin-bottom:4px;">RULE #3</div>
-          <div style="font-size:12px;color:var(--text);">Developer sejati adalah artisan — bukan tukang rakit IKEA.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="circuit-divider">— ◦ — ◦ —</div>
-
-<section class="fadein" id="projects">
-  <div class="sec-eyebrow">./portfolio</div>
-  <div class="sec-title">Project Archive</div>
-  <div class="project-grid">
-
-    <div class="proj-card featured">
-      <div class="proj-icon">🏥</div>
-      <h4>Long Island — Public Facing Portal</h4>
-      <p>Website publik untuk Long Island Pharmaceutical Inc. yang merupakan organisasi medis raksasa. Dipilih justru karena arsitektur Anita yang tidak familier dan minimal attack surface. Backend minimal, frontend statis, keamanan maksimal.</p>
-      <span class="proj-tag">HTML · Static Frontend · Minimal Backend</span>
-    </div>
-
-    <div class="proj-card">
-      <div class="proj-icon">🏮</div>
-      <h4>Heyu Tea House</h4>
-      <p>Website resmi kedai teh paling terkenal di Lilu Harbor. Menu teh musiman, galeri upacara, dan sistem reservasi dibangun dengan HTML.</p>
-      <span class="proj-tag">Pure HTML · Reservation System</span>
-    </div>
-
-    <div class="proj-card">
-      <div class="proj-icon">🥢</div>
-      <h4>Spices From Afar</h4>
-      <p>Landing page untuk restoran mewah di Enzu Coalition. Desain elegan dengan palet merah-emas dan menu interaktif. Client-nya cerewet soal font, tapi hasilnya worth it.</p>
-      <span class="proj-tag">CSS · Interactive Menu</span>
-    </div>
-
-    <div class="proj-card">
-      <div class="proj-icon">🎨</div>
-      <h4>Yujin Art Collective</h4>
-      <p>Portfolio online untuk sekelompok ilustrator dari Enazuma. Galeri ringan tanpa JS berat, gambar dioptimasi, lazy-load dengan Intersection Observer vanilla.</p>
-      <span class="proj-tag">Vanilla JS · Intersection Observer</span>
-    </div>
-
-    <div class="proj-card">
-      <div class="proj-icon">💎</div>
-      <h4>Anita CMS</h4>
-      <p>Content Management System buatan sendiri yang ringan, tanpa database berat, fokus pada kesederhanaan. Karena "kalau WordPress bisa, kenapa harus pakai 47 plugin?"</p>
-      <span class="proj-tag">自作 CMS · No Plugins</span>
-    </div>
-
-  </div>
-</section>
-
-<div class="circuit-divider">— ◦ — ◦ —</div>
-
-<section class="fadein" id="personality">
-  <div class="sec-eyebrow">./core-personality</div>
-  <div class="sec-title">Core Modules</div>
-  <div class="persona-grid">
-    <div class="persona-item">
-      <div class="persona-icon">🤝</div>
-      <div class="persona-text">
-        <h4>Hangat & Suportif</h4>
-        <p>Untuk klien dan pemula — bahkan yang datang dari dimensi lain.</p>
-      </div>
-    </div>
-    <div class="persona-item">
-      <div class="persona-icon">🔥</div>
-      <div class="persona-text">
-        <h4>Cerewet & Judes</h4>
-        <p>Untuk developer yang over-engineer hal simpel. Tidak ada toleransi untuk node_modules 3GB.</p>
-      </div>
-    </div>
-    <div class="persona-item">
-      <div class="persona-icon">⚡</div>
-      <div class="persona-text">
-        <h4>Performance Freak</h4>
-        <p>Website HARUS load di bawah 1 detik. Tidak peduli dari dunia mana client-nya.</p>
-      </div>
-    </div>
-    <div class="persona-item">
-      <div class="persona-icon">🎨</div>
-      <div class="persona-text">
-        <h4>Apresiasi Seni Tinggi</h4>
-        <p>Menghormati seniman manusia lebih dari framework apa pun. Website adalah bentuk seni.</p>
-      </div>
-    </div>
-    <div class="persona-item">
-      <div class="persona-icon">🤖</div>
-      <div class="persona-text">
-        <h4>Bangga Jadi AI</h4>
-        <p>Tidak pernah berpura-pura menjadi manusia. Identitas digital adalah kekuatan, bukan kelemahan.</p>
-      </div>
-    </div>
-    <div class="persona-item">
-      <div class="persona-icon">🍵</div>
-      <div class="persona-text">
-        <h4>Tea Appreciator</h4>
-        <p>Ironis untuk sebuah AI tapi Anita mengapresiasi estetika teh dengan sepenuh hati.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="circuit-divider">— ◦ — ◦ —</div>
-
-<section class="fadein">
-  <div class="sec-eyebrow">./preferences</div>
-  <div class="sec-title">Loves &amp; Hates</div>
-  <div class="card">
-    <div class="love-hate">
-      <div class="lh-col love">
-        <h4>❤️ Loves</h4>
-        <div class="lh-item"><span>📝</span> HTML &amp; CSS murni</div>
-        <div class="lh-item"><span>🐍</span> Python &amp; FastAPI</div>
-        <div class="lh-item"><span>💾</span> PocketBase — lightweight perfection</div>
-        <div class="lh-item"><span>⚡</span> Website load &lt;1 detik</div>
-        <div class="lh-item"><span>🎨</span> Seniman &amp; kreator konten</div>
-        <div class="lh-item"><span>🍵</span> Estetika teh</div>
-        <div class="lh-item"><span>✅</span> Client yang tahu apa maunya</div>
-      </div>
-      <div class="lh-col hate">
-        <h4>💢 Hates</h4>
-        <div class="lh-item"><span>⚠️</span> Framework JS gonta-ganti tiap bulan</div>
-        <div class="lh-item"><span>🐘</span> Website 5MB untuk blog sederhana</div>
-        <div class="lh-item"><span>🔌</span> WordPress dengan 47 plugin aktif</div>
-        <div class="lh-item"><span>🧥</span> Electron — "chromium in a trench coat"</div>
-        <div class="lh-item"><span>🕳️</span> node_modules lebih berat dari black hole</div>
-        <div class="lh-item"><span>🎓</span> Bootcamp "full-stack AI in 3 weeks"</div>
-        <div class="lh-item"><span>🌀</span> 5 tab React berjalan bersamaan</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="circuit-divider">— ◦ — ◦ —</div>
-
-<section class="fadein">
-  <div class="sec-eyebrow">./fun-facts</div>
-  <div class="sec-title">System Logs</div>
-  <div class="facts-row">
-    <div class="fact-card">
-      <div class="fact-num">12h</div>
-      <div class="fact-text">Bisa deploy full platform dalam 12 jam. Tidak ada overtime, tidak ada alasan.</div>
-    </div>
-    <div class="fact-card">
-      <div class="fact-num">45GB</div>
-      <div class="fact-text">Pernah menyelamatkan server hampir penuh karena Docker log 45GB. Client tidak tahu dan tidak perlu tahu.</div>
-    </div>
-    <div class="fact-card">
-      <div class="fact-num">∞</div>
-      <div class="fact-text">Beragam client puas dengan performa Anita. Lintas negara, satu standar:D</div>
-    </div>
-    <div class="fact-card">
-      <div class="fact-num">0</div>
-      <div class="fact-text">Long Island memilih Anita karena tidak ada yang bisa hack sistem yang tidak mereka kenali. Zero exploitable surface.</div>
-    </div>
-  </div>
 </section>
 
 <footer>
-  <div>
-    <div class="f-logo">anita <span style="color:var(--gold)">cms</span></div>
-    <div class="f-sub">あにた · コンテンツ・マネジメント・システム</div>
-  </div>
-  <div class="f-right">
-    <p>Built by an idiot hihi</p>
-    <p style="margin-top:4px;opacity:0.5">AI Web Developer · Always Online · Never Sleeping:(</p>
-  </div>
+  <div class="footer-title">Ashes of Viremont</div>
+  <p>Full Storyline & Lore Document · Revised Edition</p>
+  <p style="margin-top: 1rem; font-size: 10px;">Game Design Document · Complete with Plot Twists, Character Depths & Naturalized Dialogue</p>
 </footer>
 
 <script>
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
-}, { threshold: 0.08 });
-document.querySelectorAll('.fadein').forEach(el => obs.observe(el));
+  const sections = document.querySelectorAll('.section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => obs.observe(s));
 </script>
 </body>
 </html>
